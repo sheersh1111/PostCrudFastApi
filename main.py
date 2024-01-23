@@ -35,7 +35,7 @@ def read_post(post_id: int, db: Session = Depends(get_db)):
     return post
 
 # Update a post by its ID
-@app.put("/posts/{post_id}", response_model=PostResponse)
+@app.put("/posts/{post_id}", response_model=None)
 def update_post(post_id: int, post_update: PostCreate, db: Session = Depends(get_db)):
     db_post = db.query(Post).filter(Post.id == post_id).first()
     if db_post is None:
@@ -46,7 +46,7 @@ def update_post(post_id: int, post_update: PostCreate, db: Session = Depends(get
     
     db.commit()
     db.refresh(db_post)
-    return db_post
+    return {'success':True,'message':'Post Updated Successfully'}
 
 # Delete a post by its ID
 @app.delete("/posts/{post_id}", response_model=None)
