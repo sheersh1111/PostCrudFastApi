@@ -49,7 +49,7 @@ def update_post(post_id: int, post_update: PostCreate, db: Session = Depends(get
     return db_post
 
 # Delete a post by its ID
-@app.delete("/posts/{post_id}", response_model=PostResponse)
+@app.delete("/posts/{post_id}", response_model=None)
 def delete_post(post_id: int, db: Session = Depends(get_db)):
     db_post = db.query(Post).filter(Post.id == post_id).first()
     if db_post is None:
@@ -57,4 +57,4 @@ def delete_post(post_id: int, db: Session = Depends(get_db)):
     
     db.delete(db_post)
     db.commit()
-    return db_post
+    return {'success':True,'message':'Post Deleted Successfully'}
