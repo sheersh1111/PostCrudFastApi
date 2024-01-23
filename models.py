@@ -32,6 +32,7 @@ class PostResponse(BaseModel):
     id: int
     title: str
     body: str
+    success:bool
 
 # Dependency to get the database session
 def get_db():
