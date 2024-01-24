@@ -9,4 +9,7 @@
 
 ## uvicorn main:app --reload
 
+# Postman documentation
+https://documenter.getpostman.com/view/21465485/2s9Ykq6zkB
+
 
