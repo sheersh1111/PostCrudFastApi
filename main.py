@@ -5,10 +5,20 @@ from sqlalchemy.orm import Session
 from database import get_db
 from models import Post, Base , engine,PostCreate, PostResponse
 from typing import List
+from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy import desc
 app = FastAPI()
 
 # Create the tables
 Base.metadata.create_all(bind=engine)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Adjust this to the origin(s) of your frontend app
+    allow_credentials=True,
+    allow_methods=["*"],  # Allow all methods (GET, POST, etc.)
+    allow_headers=["*"],  # Allow all headers
+)
 
 
 # Create a post
@@ -23,7 +33,7 @@ def create_post(post: PostCreate, db: Session = Depends(get_db)):
 # Get all posts
 @app.get("/posts", response_model=List[PostResponse])
 def read_posts(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
-    posts = db.query(Post).offset(skip).limit(limit).all()
+    posts = db.query(Post).order_by(desc(Post.id)).offset(skip).limit(limit).all()
     return posts
 
 # Get a single post by its ID
